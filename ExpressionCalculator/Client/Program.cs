@@ -6,44 +6,29 @@ namespace ExpressionCalculator.Client
 {
     class Program
     {
-        static async Task Main(string[] args)
+        static async Task Main(string[] args) // metodo para ejecutar cliente
         {
-            Console.WriteLine("Cliente de prueba para calculadora de expresiones");
-
-            var client = new ClientSocket();
+            var client = new ClientSocket(); // instancia de cliente
 
             try
             {
-                Console.WriteLine("Conectando al servidor...");
-                await client.ConnectAsync();
-                Console.WriteLine("¡Conectado!");
+                await client.ConnectAsync(); // intenta conectarse con el server
 
                 while (true)
                 {
-                    Console.Write("\nIngrese una expresión (o 'exit' para salir): ");
-                    string input = Console.ReadLine();
-
-                    if (input?.ToLower() == "exit")
-                        break;
-
-                    Console.WriteLine("Enviando expresión al servidor...");
-                    await client.SendExpressionAsync(input);
-
-                    string response = await client.ReceiveResponseAsync();
+                    string input = Console.ReadLine(); // lee la entrada del usuario
+                    string response = await client.ReceiveResponseAsync(); // espera la respuesta del server
                     Console.WriteLine($"Respuesta del servidor: {response}");
                 }
             }
-            catch (Exception ex)
+            catch (Exception ex) // manejo de exepciones
             {
                 Console.WriteLine($"Error: {ex.Message}");
             }
-            finally
+            finally // se asegura que el cliente se desconecte
             {
                 client.Disconnect();
             }
-
-            Console.WriteLine("\nPresione cualquier tecla para salir...");
-            Console.ReadKey();
         }
     }
 }

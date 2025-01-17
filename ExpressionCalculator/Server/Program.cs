@@ -6,7 +6,7 @@ namespace ExpressionCalculator.Server
 {
     class Program
     {
-        static async Task Main(string[] args)
+        static async Task Main(string[] args) // inicia el server
         {
             Console.WriteLine("Iniciando servidor...");
 

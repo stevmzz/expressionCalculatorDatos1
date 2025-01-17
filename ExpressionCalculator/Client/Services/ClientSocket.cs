@@ -13,7 +13,7 @@ namespace ExpressionCalculator.Client.Services
         private readonly string _serverIp;
         private readonly int _serverPort;
 
-        public ClientSocket(string serverIp = "127.0.0.1", int serverPort = 8888)
+        public ClientSocket(string serverIp = "192.168.100.45", int serverPort = 8888)
         {
             _serverIp = serverIp;
             _serverPort = serverPort;
