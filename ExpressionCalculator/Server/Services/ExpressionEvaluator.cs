@@ -84,7 +84,7 @@ namespace ExpressionCalculator.Server.Services
                         output.Add(operators.Pop()); // movemos operadores desde la pila a la salida
                     }
 
-                    if (operators.Count > 0 && operators.Peek() == ")") // si se encuntra un parentesis que abre, se elimina de la pila
+                    if (operators.Count > 0 && operators.Peek() == "(") // si se encuntra un parentesis que abre, se elimina de la pila
                     {
                         operators.Pop();
                     }

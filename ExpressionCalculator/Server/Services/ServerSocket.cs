@@ -11,11 +11,13 @@ namespace ExpressionCalculator.Server.Services
         private TcpListener _tcpListener; // escuchar conecciones
         private readonly int _port; // puerto en el que escucha conecciones
         private bool _isRunning; // indica si el server corre
+        private ExpressionEvaluator _evaluator; // para evaluar las expresiones
 
         public ServerSocket(int port = 8888) // constructor
         {
             _port = port;
             _isRunning = false;
+            _evaluator = new ExpressionEvaluator();
         }
 
         public async Task startAsync() // metodo para iniciar server
@@ -70,9 +72,21 @@ namespace ExpressionCalculator.Server.Services
                             if (!string.IsNullOrWhiteSpace(expression)) // para evitar que se procesen lineas vacías
                             {
                                 Console.WriteLine($"Expresión recibida: {expression}");
-                                string result = "Resultado provisional";
-                                byte[] response = Encoding.UTF8.GetBytes(result + "\n"); // convierte en bytes y lo manda al cliente
-                                await stream.WriteAsync(response, 0, response.Length); 
+
+                                try
+                                {
+                                    double result = _evaluator.EvaluateExpression(expression); // para guardar el resultado de la expresion
+                                    string response = result.ToString() + "\n";
+                                    byte[] responseData = Encoding.UTF8.GetBytes(response); // convierte en bytes y lo manda al cliente
+                                    await stream.WriteAsync(responseData, 0, responseData.Length);
+                                }
+                                catch (Exception ex) // manejo de errores
+                                {
+                                    string errorResponse = $"Error: {ex.Message}\n";
+                                    byte[] errorData = Encoding.UTF8.GetBytes(errorResponse);
+                                    await stream.WriteAsync(errorData, 0, errorData.Length);
+                                }
+
                                 messageBuilder.Clear(); // limpia para el siguiente cliente
                             }
                         }
