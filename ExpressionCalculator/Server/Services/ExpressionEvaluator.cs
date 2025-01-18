@@ -12,7 +12,10 @@ namespace ExpressionCalculator.Server.Services
                 "**" => 4,
                 "*" or "/" or "%" => 3,
                 "+" or "-" => 2,
-                _ => -1
+                "(" => 1,
+                ")" => 1,
+                "&" or "|" or "^" or "~" => 5,
+                _ => throw new ArgumentException($"Operador no válido: {op}")
             };
         }
 
@@ -20,6 +23,7 @@ namespace ExpressionCalculator.Server.Services
         {
             var tokens = new List<string>(); // lista para almacenar tokens
             var currentNumber = ""; // variable temporal para acumular digitos
+            bool lastWasOperator = true; // para detectar numeros negativos
 
             for (int i = 0; i < expression.Length; i++) // recorremos la expresíon completa
             {
@@ -30,9 +34,10 @@ namespace ExpressionCalculator.Server.Services
                     continue;
                 }
 
-                if (char.IsDigit(c) ||  c == ',') // si el character es digito o decimal
+                if (c == '-' && lastWasOperator || char.IsDigit(c) ||  c == ',' || c == '.') // si el character es digito o decimal
                 {
                     currentNumber += c;
+                    lastWasOperator = false;
                 }
                 else
                 {
@@ -51,6 +56,8 @@ namespace ExpressionCalculator.Server.Services
                     {
                         tokens.Add(c.ToString()); // agrega cualquier otro operador como token
                     }
+
+                    lastWasOperator = c != ')';
                 }
             }
 
