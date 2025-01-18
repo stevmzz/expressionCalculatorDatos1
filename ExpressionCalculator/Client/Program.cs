@@ -1,12 +1,17 @@
-namespace Client
+using System;
+using System.Windows.Forms;
+using Client.Forms;
+
+namespace ExpressionCalculator.Client
 {
-    internal static class Program
+    static class Program
     {
         [STAThread]
-        static void Main()
+        static void Main() // clase principal de la app
         {
-            ApplicationConfiguration.Initialize();
-            Application.Run(new Forms.MainForm());
+            Application.SetHighDpiMode(HighDpiMode.SystemAware); // ajusta la calidad
+            Application.EnableVisualStyles(); // para que adopte estilos de OS
+            Application.Run(new MainForm()); // ejecuta el forms principal
         }
     }
 }
