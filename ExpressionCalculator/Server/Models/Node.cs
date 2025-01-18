@@ -15,7 +15,7 @@
 
         public bool IsOperator()
         {
-            return Value is "+" or "-" or "*" or "/" or "%" or "**" or "," or "&" or "|" or "^" or "~";
+            return Value is "+" or "-" or "*" or "/" or "%" or "**" or "&" or "|" or "^" or "~";
         }
     }
 }
