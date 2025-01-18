@@ -1,22 +1,22 @@
-﻿using ExpressionCalculator.Server.Services;
-using System;
-using System.Threading.Tasks;
+﻿    using ExpressionCalculator.Server.Services;
+    using System;
+    using System.Threading.Tasks;
 
-namespace ExpressionCalculator.Server
-{
-    class Program
+    namespace ExpressionCalculator.Server
     {
-        static async Task Main(string[] args) // inicia el server
+        class Program
         {
-            Console.WriteLine("Iniciando servidor...");
+            static async Task Main(string[] args) // inicia el server
+            {
+                Console.WriteLine("Iniciando servidor...");
 
-            var server = new ServerSocket();
-            await server.startAsync();
+                var server = new ServerSocket();
+                await server.startAsync();
 
-            Console.WriteLine("Presione cualquier tecla para detener el servidor...");
-            Console.ReadKey();
+                Console.WriteLine("Presione cualquier tecla para detener el servidor...");
+                Console.ReadKey();
 
-            server.Stop();
+                server.Stop();
+            }
         }
     }
-}
