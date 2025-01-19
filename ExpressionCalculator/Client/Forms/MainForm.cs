@@ -63,5 +63,15 @@ namespace Client.Forms
         {
             _clientSocket.Disconnect();
         }
+
+        private void titleLabel_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void historyGridView_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
     }
 }
