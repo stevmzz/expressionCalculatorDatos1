@@ -3,7 +3,8 @@
     public class ExpressionValidator
     {
         // separamos los operadores en diferentes categorias
-        private static readonly string[] Operators = { "+", "-", "*", "/", "%", "**", "&", "|", "^", "~" };
+        private static readonly string[] MathOperators = { "+", "-", "*", "/", "%", "**" };
+        private static readonly string[] LogicalOperators = { "&", "|", "^", "~" };
         private static readonly string[] Parentheses = { "(", ")" };
 
         public (bool isValid, string? errorMessage) ValidateExpression(string expression)
@@ -43,19 +44,27 @@
             return (true, null);
         }
 
-        private bool ContainsOnlyValidCharacters(string expression)
+        private bool ContainsOnlyValidCharacters(string expression) // metodo que recorre cada token y verifica que sean validos
         {
+            var allOperators = MathOperators.Concat(LogicalOperators).Concat(Parentheses);
             foreach (char c in expression)
             {
                 if (!char.IsDigit(c) &&
-                    !Operators.Contains(c.ToString()) &&
-                    !Parentheses.Contains(c.ToString()) &&
+                    !allOperators.Contains(c.ToString()) &&
                     c != ' ')
                 {
                     return false;
                 }
             }
             return true;
+        }
+
+        private bool HasMixedOperators(string expression) // metodo para verificar si combina operadores
+        {
+            bool hasMathOperator = MathOperators.Any(op => expression.Contains(op));
+            bool hasLogicalOperator = LogicalOperators.Any(op => expression.Contains(op));
+
+            return hasMathOperator && hasLogicalOperator;
         }
 
         private bool HasBalancedParentheses(string expression)
@@ -74,18 +83,16 @@
             return count == 0;
         }
 
-        private bool StartsOrEndsWithOperator(string expression)
+        private bool StartsOrEndsWithOperator(string expression) // metodo para verifiacar si termina o empieza con un operador
         {
             if (string.IsNullOrEmpty(expression)) return true;
 
-            char firstChar = expression[0];
-            char lastChar = expression[^1];
-
-            return Operators.Contains(expression[0].ToString()) ||
-                   Operators.Contains(expression[^1].ToString());
+            var allOperators = MathOperators.Concat(LogicalOperators);
+            return allOperators.Contains(expression[0].ToString()) ||
+                   allOperators.Contains(expression[^1].ToString());
         }
 
-        private bool HasConsecutiveOperators(string expression)
+        private bool HasConsecutiveOperators(string expression) // metodo para verificar si contiene dos operadores seguidos
         {
             for (int i = 0; i < expression.Length - 1; i++)
             {
@@ -98,7 +105,8 @@
                     continue;
                 }
 
-                if (Operators.Contains(currentChar) && Operators.Contains(nextChar))
+                var allOperators = MathOperators.Concat(LogicalOperators);
+                if (allOperators.Contains(currentChar) && allOperators.Contains(nextChar))
                 {
                     return true;
                 }
@@ -106,12 +114,12 @@
             return false;
         }
 
-        private bool HasValidNumbers(string expression)
+        private bool HasValidNumbers(string expression) // metodo para verificar que son numeros validos
         {
             string temp = expression; // creamos una copia de la expresion para manipularla
             temp = temp.Replace("(", " ").Replace(")", " "); // removemos los parentesis
 
-            foreach (var op in Operators) // removemos los operadores
+            foreach (var op in MathOperators.Concat(LogicalOperators)) // removemos los operadores
             {
                 temp = temp.Replace(op, " ");
             }
