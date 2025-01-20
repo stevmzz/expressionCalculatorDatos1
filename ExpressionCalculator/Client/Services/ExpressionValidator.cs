@@ -41,6 +41,11 @@
                 return (false, "Formato de números inválido.");
             }
 
+            if (HasMixedOperators(expression))
+            {
+                return (false, "No se pueden mezclar operadores lógicos y matemáticos en la misma expresión.");
+            }
+
             return (true, null);
         }
 
@@ -67,6 +72,44 @@
             return hasMathOperator && hasLogicalOperator;
         }
 
+        private bool IsOperator(string c) // metodo para verificar si es un operador
+        {
+            return MathOperators.Contains(c) || LogicalOperators.Contains(c);
+        }
+
+        private bool HasInvalidOperatorSequence(string expression)
+        {
+            for (int i = 0; i < expression.Length - 1; i++)
+            {
+                string currentChar = expression[i].ToString();
+                string nextChar = expression[i + 1].ToString();
+
+                // permitir numeros negativos despues de operadores o al inicio de la expresion
+                if (currentChar == "-")
+                {
+                    // si es el primer caracter o viene despues de un operador o parentesis de apertura
+                    if (i == 0 || IsOperator(expression[i - 1].ToString()) || expression[i - 1] == '(')
+                    {
+                        continue;
+                    }
+                }
+
+                // manejo especial para potencia (**)
+                if (currentChar == "*" && nextChar == "*")
+                {
+                    i++; // saltar el siguiente *
+                    continue;
+                }
+
+                // verificar operadores consecutivos que no sean parte de un numero negativo
+                if (IsOperator(currentChar) && IsOperator(nextChar) && nextChar != "-")
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
         private bool HasBalancedParentheses(string expression)
         {
             int count = 0;
@@ -88,6 +131,16 @@
             if (string.IsNullOrEmpty(expression)) return true;
 
             var allOperators = MathOperators.Concat(LogicalOperators);
+
+            if (expression[0] == '-')
+            {
+                // verificar si el siguiente caracter es un numero o un parentesis
+                if (expression.Length > 1 && (char.IsDigit(expression[1]) || expression[1] == '('))
+                {
+                    return false;
+                }
+            }
+
             return allOperators.Contains(expression[0].ToString()) ||
                    allOperators.Contains(expression[^1].ToString());
         }
@@ -103,6 +156,15 @@
                 {
                     i++; // saltar el siguiente *
                     continue;
+                }
+
+                if (nextChar == "-")
+                {
+                    // permitir negativos despues de operadores o parentesis de apertura
+                    if (IsOperator(currentChar) || currentChar == "(")
+                    {
+                        continue;
+                    }
                 }
 
                 var allOperators = MathOperators.Concat(LogicalOperators);
