@@ -2,6 +2,7 @@
 using System.Linq.Expressions;
 using System.Windows.Forms;
 using ExpressionCalculator.Client.Services;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace Client.Forms
 {
@@ -72,6 +73,151 @@ namespace Client.Forms
         private void historyGridView_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
 
+        }
+
+        private void deleteAll_Click(object sender, EventArgs e)
+        {
+            expressionTextBox.Clear();
+        }
+
+        private void delete_Click(object sender, EventArgs e)
+        {
+            SendKeys.Send("{BACKSPACE}");
+            expressionTextBox.Focus();
+        }
+
+        private void paren1_Click(object sender, EventArgs e)
+        {
+            SendKeys.Send("{(}");
+            expressionTextBox.Focus();
+        }
+
+        private void paren2_Click(object sender, EventArgs e)
+        {
+            SendKeys.Send("{)}");
+            expressionTextBox.Focus();
+        }
+
+        private void buttonXOR_Click(object sender, EventArgs e)
+        {
+            expressionTextBox.Focus();
+            int cursorPosition = expressionTextBox.SelectionStart;
+            expressionTextBox.Text = expressionTextBox.Text.Insert(cursorPosition, "^");
+            expressionTextBox.SelectionStart = cursorPosition + 1;
+        }
+
+        private void button7t_Click(object sender, EventArgs e)
+        {
+            expressionTextBox.Focus();
+            SendKeys.Send("7");
+        }
+
+        private void button8t_Click(object sender, EventArgs e)
+        {
+            expressionTextBox.Focus();
+            SendKeys.Send("8");
+        }
+
+        private void button9t_Click(object sender, EventArgs e)
+        {
+            expressionTextBox.Focus();
+            SendKeys.Send("9");
+        }
+
+        private void buttonNot_Click(object sender, EventArgs e)
+        {
+            expressionTextBox.Focus();
+            SendKeys.Send("{~}");
+        }
+
+        private void button4t_Click(object sender, EventArgs e)
+        {
+            expressionTextBox.Focus();
+            SendKeys.Send("4");
+        }
+
+        private void button5t_Click(object sender, EventArgs e)
+        {
+            expressionTextBox.Focus();
+            SendKeys.Send("5");
+        }
+
+        private void button6t_Click(object sender, EventArgs e)
+        {
+            expressionTextBox.Focus();
+            SendKeys.Send("6");
+        }
+
+        private void buttonDisyun_Click(object sender, EventArgs e)
+        {
+            expressionTextBox.Focus();
+            SendKeys.Send("|");
+        }
+
+        private void button1t_Click(object sender, EventArgs e)
+        {
+            expressionTextBox.Focus();
+            SendKeys.Send("1");
+        }
+
+        private void button2t_Click(object sender, EventArgs e)
+        {
+            expressionTextBox.Focus();
+            SendKeys.Send("2");
+        }
+
+        private void button3t_Click(object sender, EventArgs e)
+        {
+            expressionTextBox.Focus();
+            SendKeys.Send("3");
+        }
+
+        private void buttonConjun_Click(object sender, EventArgs e)
+        {
+            expressionTextBox.Focus();
+            SendKeys.Send("&");
+        }
+
+        private void button0t_Click(object sender, EventArgs e)
+        {
+            expressionTextBox.Focus();
+            SendKeys.Send("0");
+        }
+
+        private void buttonCuadrado_Click(object sender, EventArgs e)
+        {
+            expressionTextBox.Focus();
+            SendKeys.Send("**");
+        }
+
+        private void buttonPorcent_Click(object sender, EventArgs e)
+        {
+            expressionTextBox.Focus();
+            SendKeys.Send("{%}");
+        }
+
+        private void buttonDiv_Click(object sender, EventArgs e)
+        {
+            expressionTextBox.Focus();
+            SendKeys.Send("/");
+        }
+
+        private void buttonSuma_Click(object sender, EventArgs e)
+        {
+            expressionTextBox.Focus();
+            SendKeys.Send("{+}");
+        }
+
+        private void buttonResta_Click(object sender, EventArgs e)
+        {
+            expressionTextBox.Focus();
+            SendKeys.Send("-");
+        }
+
+        private void buttonMulti_Click(object sender, EventArgs e)
+        {
+            expressionTextBox.Focus();
+            SendKeys.Send("*");
         }
     }
 }
