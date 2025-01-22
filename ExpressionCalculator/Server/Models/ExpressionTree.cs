@@ -80,6 +80,10 @@
                     : throw new DivideByZeroException(),
                 "%" => (leftValue / 100) * rightValue,
                 "**" => Math.Pow(leftValue, rightValue),
+		"&" => Convert.ToDouble(Convert.ToBoolean(leftValue) && Convert.ToBoolean(rightValue)),
+		"|" => Convert.ToDouble(Convert.ToBoolean(leftValue) || Convert.ToBoolean(rightValue)),
+		"^" => Convert.ToDouble(Convert.ToBoolean(leftValue) != Convert.ToBoolean(rightValue)),
+		//"~" => // TODO: Mejor negar antes de evaluacion
                 _ => throw new ArgumentException($"Operador no soportado: {node.Value}")
             };
         }
