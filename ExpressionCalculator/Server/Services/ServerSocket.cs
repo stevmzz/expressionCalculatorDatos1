@@ -86,7 +86,6 @@ namespace ExpressionCalculator.Server.Services
                                 catch (Exception ex) // manejo de errores
                                 {
                                     Console.WriteLine($"Error al procesar: {ex.Message}");
-                                    Console.WriteLine($"Stack trace: {ex.StackTrace}");
                                     string errorResponse = $"Error: {ex.Message}\n";
                                     byte[] errorData = Encoding.UTF8.GetBytes(errorResponse);
                                     await stream.WriteAsync(errorData, 0, errorData.Length);
@@ -102,7 +101,6 @@ namespace ExpressionCalculator.Server.Services
             catch (Exception ex) // manejo de errores durante la comunicacion
             {
                 Console.WriteLine($"Error manejando cliente: {ex.Message}");
-                Console.WriteLine($"Stack trace: {ex.StackTrace}");
             }
 
             finally // se asegura que el cliente se desconecte
