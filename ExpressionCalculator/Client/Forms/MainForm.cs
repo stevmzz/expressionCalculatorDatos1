@@ -19,6 +19,40 @@ namespace Client.Forms
             sendButton.Click += SendButton_Click;
             this.Load += MainForm_Load;
             this.FormClosing += MainForm_FormClosing;
+            this.KeyPreview = true;
+            this.KeyPress += AnyKeyPress;
+        }
+
+        private void AnyKeyPress(object sender, KeyPressEventArgs e)
+        {
+
+            if (e.KeyChar == (char)Keys.Enter)
+            {
+                e.Handled = true;
+                sendButton.PerformClick();
+                return;
+            }
+
+            // lista de caracteres permitidos
+            string allowedChars = "0123456789+-*/()^~&|%,.";
+
+            if (allowedChars.Contains(e.KeyChar) || e.KeyChar == '\b') // \b es para permitir la tecla backspace
+            {
+                e.Handled = true;
+                if (e.KeyChar == '\b')
+                {
+                    if (expressionTextBox.Text.Length > 0)
+                    {
+                        expressionTextBox.Text = expressionTextBox.Text.Substring(0, expressionTextBox.Text.Length - 1);
+                        expressionTextBox.SelectionStart = expressionTextBox.Text.Length;
+                    }
+                }
+                else
+                {
+                    expressionTextBox.Text += e.KeyChar;
+                    expressionTextBox.SelectionStart = expressionTextBox.Text.Length;
+                }
+            }
         }
 
         private async void MainForm_Load(object sender, EventArgs e) // se ejecuta cuando carga el formulario, osea intenta conectarse al server
@@ -218,6 +252,11 @@ namespace Client.Forms
         {
             expressionTextBox.Focus();
             SendKeys.Send("*");
+        }
+
+        private void sendButton_Click_1(object sender, EventArgs e)
+        {
+           
         }
     }
 }
