@@ -1,4 +1,5 @@
-﻿using ExpressionCalculator.Server.Models;
+﻿using System.Globalization;
+using ExpressionCalculator.Server.Models;
 
 namespace ExpressionCalculator.Server.Services
 {
@@ -21,6 +22,9 @@ namespace ExpressionCalculator.Server.Services
 
         private static string[] TokenizeExpression(string expression) // separa la expresión en tokens individuales
         {
+
+            expression = expression.Replace(",", "."); // convertimos las comas en puntos al inicio
+
             var tokens = new List<string>(); // lista para almacenar tokens
             var currentNumber = ""; // variable temporal para acumular digitos
             bool lastWasOperator = true; // para detectar numeros negativos
@@ -34,10 +38,18 @@ namespace ExpressionCalculator.Server.Services
                     continue;
                 }
 
-                if (c == '-' && lastWasOperator || char.IsDigit(c) ||  c == ',' || c == '.') // si el character es digito o decimal
+                if (c == '-' && lastWasOperator || char.IsDigit(c) || c == '.') // si el character es digito o decimal
                 {
-                    currentNumber += c;
-                    lastWasOperator = false;
+                    // verificamos punto decimal en lugar de coma
+                    if (c == '.' && currentNumber.Contains('.'))
+                    {
+                        throw new ArgumentException("Formato de número inválido: múltiples separadores decimales");
+                    }
+                    if (char.IsDigit(c) || c == '.')
+                    {
+                        currentNumber += c;
+                        lastWasOperator = false;
+                    }
                 }
                 else
                 {
@@ -76,7 +88,7 @@ namespace ExpressionCalculator.Server.Services
 
             foreach (var token in tokens)
             {
-                if (double.TryParse(token, out _)) // si es un numero va a la salida
+                if (double.TryParse(token, NumberStyles.Float, CultureInfo.InvariantCulture, out _)) // si es un numero va a la salida y cultureinfo para decimales
                 {
                     output.Add(token);
                 }

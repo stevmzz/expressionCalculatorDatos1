@@ -1,4 +1,6 @@
-﻿namespace ExpressionCalculator.Client.Services
+﻿using System.Globalization;
+
+namespace ExpressionCalculator.Client.Services
 {
     public class ExpressionValidator
     {
@@ -15,6 +17,7 @@
             }
 
             expression = expression.Replace(" ", ""); // eliminar espacios en blanco
+            expression = expression.Replace(",", "."); // convertir comas en puntos
 
             if (!ContainsOnlyValidCharacters(expression))
             {
@@ -56,7 +59,9 @@
             {
                 if (!char.IsDigit(c) &&
                     !allOperators.Contains(c.ToString()) &&
-                    c != ' ')
+                    c != ' ' &&
+                    c != '.' &&
+                    c != ',')
                 {
                     return false;
                 }
@@ -190,7 +195,7 @@
 
             foreach (var number in numbers) // verificamos que cada token sea un numero
             {
-                if (!double.TryParse(number, out _))
+                if (!double.TryParse(number, NumberStyles.Float, CultureInfo.InvariantCulture, out _)) // para que los decimales se interpreten bien usamos cultureinfo
                 {
                     return false;
                 }
