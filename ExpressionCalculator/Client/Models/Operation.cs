@@ -1,4 +1,4 @@
-﻿namespace ExpressionCalculator.Server.Models
+﻿namespace ExpressionCalculator.Client.Models
 {
     public class Operation // clase que maneja los datos de cada operacion
     {

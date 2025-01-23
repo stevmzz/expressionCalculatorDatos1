@@ -61,6 +61,7 @@ namespace Client.Forms
             {
                 await _clientSocket.ConnectAsync();
                 resultLabel.Text = "Conectado al servidor";
+                await UpdateHistoryAsync(); // espera la actualizacion del historial
             }
             catch (Exception ex)
             {
@@ -86,11 +87,34 @@ namespace Client.Forms
                 await _clientSocket.SendExpressionAsync(expressionTextBox.Text); // envia la expresion al server
                 string response = await _clientSocket.ReceiveResponseAsync(); // espera la respuesta del server
                 resultLabel.Text = $"Resultado: {response}"; // muestra el mensaje en el servidor
+                await UpdateHistoryAsync();
                 expressionTextBox.Clear(); // limpiamos el textbox despues del envio exitoso
             }
             catch (Exception ex) // maneja errores
             {
                 MessageBox.Show($"Error al enviar expresión: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private async Task UpdateHistoryAsync() // metodo para actualizar el historial
+        {
+            try
+            {
+                var history = await _clientSocket.GetOperationsHistoryAsync(); // espera por las operaciones desde el server
+                historyGridView.Rows.Clear(); // limpia las columnas
+
+                foreach (var operation in history) // itera en cada operacion
+                {
+                    historyGridView.Rows.Add( // agrega una fila
+                        operation.Timestamp.ToString("yyyy-MM-dd"),
+                        operation.Expression,
+                        operation.Result
+                    );
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error actualizando historial: {ex.Message}");
             }
         }
 
