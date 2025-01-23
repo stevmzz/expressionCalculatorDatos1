@@ -12,8 +12,8 @@
 
         private void InitializeComponent()
         {
-            DataGridViewCellStyle dataGridViewCellStyle39 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle40 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
             expressionTextBox = new TextBox();
             sendButton = new Button();
             resultLabel = new Label();
@@ -77,6 +77,7 @@
             sendButton.TabIndex = 2;
             sendButton.Text = "Enviar";
             sendButton.UseVisualStyleBackColor = false;
+            sendButton.Click += sendButton_Click_1;
             // 
             // resultLabel
             // 
@@ -128,24 +129,24 @@
             historyGridView.BorderStyle = BorderStyle.None;
             historyGridView.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
             historyGridView.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
-            dataGridViewCellStyle39.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle39.BackColor = Color.FromArgb(45, 45, 45);
-            dataGridViewCellStyle39.Font = new Font("Segoe UI Semibold", 9F);
-            dataGridViewCellStyle39.ForeColor = Color.FromArgb(230, 230, 230);
-            dataGridViewCellStyle39.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle39.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle39.WrapMode = DataGridViewTriState.True;
-            historyGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle39;
+            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle1.BackColor = Color.FromArgb(45, 45, 45);
+            dataGridViewCellStyle1.Font = new Font("Segoe UI Semibold", 9F);
+            dataGridViewCellStyle1.ForeColor = Color.FromArgb(230, 230, 230);
+            dataGridViewCellStyle1.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
+            historyGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             historyGridView.ColumnHeadersHeight = 30;
             historyGridView.Columns.AddRange(new DataGridViewColumn[] { dataGridViewTextBoxColumn1, dataGridViewTextBoxColumn2, dataGridViewTextBoxColumn3 });
-            dataGridViewCellStyle40.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle40.BackColor = Color.FromArgb(50, 50, 50);
-            dataGridViewCellStyle40.Font = new Font("Segoe UI", 9F);
-            dataGridViewCellStyle40.ForeColor = Color.FromArgb(230, 230, 230);
-            dataGridViewCellStyle40.SelectionBackColor = Color.FromArgb(75, 75, 75);
-            dataGridViewCellStyle40.SelectionForeColor = Color.White;
-            dataGridViewCellStyle40.WrapMode = DataGridViewTriState.False;
-            historyGridView.DefaultCellStyle = dataGridViewCellStyle40;
+            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = Color.FromArgb(50, 50, 50);
+            dataGridViewCellStyle2.Font = new Font("Segoe UI", 9F);
+            dataGridViewCellStyle2.ForeColor = Color.FromArgb(230, 230, 230);
+            dataGridViewCellStyle2.SelectionBackColor = Color.FromArgb(75, 75, 75);
+            dataGridViewCellStyle2.SelectionForeColor = Color.White;
+            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.False;
+            historyGridView.DefaultCellStyle = dataGridViewCellStyle2;
             historyGridView.EnableHeadersVisualStyles = false;
             historyGridView.GridColor = Color.FromArgb(70, 70, 70);
             historyGridView.Location = new Point(23, 56);
@@ -252,7 +253,7 @@
             // 
             // button9t
             // 
-            button9t.BackColor = Color.FromArgb(75, 75, 75);
+            button9t.BackColor = Color.FromArgb(64, 64, 64);
             button9t.Cursor = Cursors.Hand;
             button9t.FlatAppearance.BorderSize = 0;
             button9t.FlatStyle = FlatStyle.Flat;
@@ -269,7 +270,7 @@
             // 
             // button8t
             // 
-            button8t.BackColor = Color.FromArgb(75, 75, 75);
+            button8t.BackColor = Color.FromArgb(64, 64, 64);
             button8t.Cursor = Cursors.Hand;
             button8t.FlatAppearance.BorderSize = 0;
             button8t.FlatStyle = FlatStyle.Flat;
@@ -286,7 +287,7 @@
             // 
             // button7t
             // 
-            button7t.BackColor = Color.FromArgb(75, 75, 75);
+            button7t.BackColor = Color.FromArgb(64, 64, 64);
             button7t.Cursor = Cursors.Hand;
             button7t.FlatAppearance.BorderSize = 0;
             button7t.FlatStyle = FlatStyle.Flat;
@@ -320,7 +321,7 @@
             // 
             // button3t
             // 
-            button3t.BackColor = Color.FromArgb(75, 75, 75);
+            button3t.BackColor = Color.FromArgb(64, 64, 64);
             button3t.Cursor = Cursors.Hand;
             button3t.FlatAppearance.BorderSize = 0;
             button3t.FlatStyle = FlatStyle.Flat;
@@ -337,7 +338,7 @@
             // 
             // button2t
             // 
-            button2t.BackColor = Color.FromArgb(75, 75, 75);
+            button2t.BackColor = Color.FromArgb(64, 64, 64);
             button2t.Cursor = Cursors.Hand;
             button2t.FlatAppearance.BorderSize = 0;
             button2t.FlatStyle = FlatStyle.Flat;
@@ -354,7 +355,7 @@
             // 
             // button1t
             // 
-            button1t.BackColor = Color.FromArgb(75, 75, 75);
+            button1t.BackColor = Color.FromArgb(64, 64, 64);
             button1t.Cursor = Cursors.Hand;
             button1t.FlatAppearance.BorderSize = 0;
             button1t.FlatStyle = FlatStyle.Flat;
@@ -388,7 +389,7 @@
             // 
             // button6t
             // 
-            button6t.BackColor = Color.FromArgb(75, 75, 75);
+            button6t.BackColor = Color.FromArgb(64, 64, 64);
             button6t.Cursor = Cursors.Hand;
             button6t.FlatAppearance.BorderSize = 0;
             button6t.FlatStyle = FlatStyle.Flat;
@@ -405,7 +406,7 @@
             // 
             // button5t
             // 
-            button5t.BackColor = Color.FromArgb(75, 75, 75);
+            button5t.BackColor = Color.FromArgb(64, 64, 64);
             button5t.Cursor = Cursors.Hand;
             button5t.FlatAppearance.BorderSize = 0;
             button5t.FlatStyle = FlatStyle.Flat;
@@ -422,7 +423,7 @@
             // 
             // button4t
             // 
-            button4t.BackColor = Color.FromArgb(75, 75, 75);
+            button4t.BackColor = Color.FromArgb(64, 64, 64);
             button4t.Cursor = Cursors.Hand;
             button4t.FlatAppearance.BorderSize = 0;
             button4t.FlatStyle = FlatStyle.Flat;
@@ -558,7 +559,7 @@
             // 
             // button0t
             // 
-            button0t.BackColor = Color.FromArgb(75, 75, 75);
+            button0t.BackColor = Color.FromArgb(64, 64, 64);
             button0t.Cursor = Cursors.Hand;
             button0t.FlatAppearance.BorderSize = 0;
             button0t.FlatStyle = FlatStyle.Flat;

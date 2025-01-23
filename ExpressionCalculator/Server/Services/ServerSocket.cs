@@ -71,17 +71,21 @@ namespace ExpressionCalculator.Server.Services
                             
                             if (!string.IsNullOrWhiteSpace(expression)) // para evitar que se procesen lineas vacías
                             {
+                                Console.WriteLine("------------------------");
                                 Console.WriteLine($"Expresión recibida: {expression}");
 
                                 try
                                 {
+                                    Console.WriteLine($"Intentando evaluar expresión: {expression}");
                                     double result = _evaluator.EvaluateExpression(expression); // para guardar el resultado de la expresion
+                                    Console.WriteLine($"Resultado calculado: {result}");
                                     string response = result.ToString() + "\n";
                                     byte[] responseData = Encoding.UTF8.GetBytes(response); // convierte en bytes y lo manda al cliente
                                     await stream.WriteAsync(responseData, 0, responseData.Length);
                                 }
                                 catch (Exception ex) // manejo de errores
                                 {
+                                    Console.WriteLine($"Error al procesar: {ex.Message}");
                                     string errorResponse = $"Error: {ex.Message}\n";
                                     byte[] errorData = Encoding.UTF8.GetBytes(errorResponse);
                                     await stream.WriteAsync(errorData, 0, errorData.Length);
@@ -103,6 +107,7 @@ namespace ExpressionCalculator.Server.Services
             {
                 client.Close();
                 Console.WriteLine("Cliente desconectado");
+                Console.WriteLine("------------------------");
             }
         }
 
