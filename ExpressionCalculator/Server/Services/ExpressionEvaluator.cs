@@ -9,12 +9,12 @@ namespace ExpressionCalculator.Server.Services
         {
             return op switch // define la prioridad de los operadores
             {
-                "**" => 4,
-                "*" or "/" or "%" => 3,
-                "+" or "-" => 2,
-                "(" => 1,
-                ")" => 1,
-                "&" or "|" or "^" or "~" => 5,
+                "~" => 6,  // Mayor precedencia para NOT
+                "**" => 5,
+                "*" or "/" or "%" => 4,
+                "+" or "-" => 3,
+                "&" or "|" or "^" => 2,
+                "(" or ")" => 1,
                 _ => throw new ArgumentException($"Operador no válido: {op}")
             };
         }
@@ -127,6 +127,15 @@ namespace ExpressionCalculator.Server.Services
         {
             try
             {
+
+                // Primero manejamos los casos especiales de NOT de forma directa
+                if (expression.Contains("~"))
+                {
+                    // Reemplazamos ~1 por 0 y ~0 por 1
+                    expression = expression.Replace("~1", "0");
+                    expression = expression.Replace("~0", "1");
+                }
+
                 var tokens = TokenizeExpression(expression); // tokenizamos la expresión
                 var postfixTokens = InfixToPostfix(tokens); // convertimos a postfija
 

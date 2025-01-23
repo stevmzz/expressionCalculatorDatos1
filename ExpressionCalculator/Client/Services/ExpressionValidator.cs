@@ -132,7 +132,7 @@
 
             var allOperators = MathOperators.Concat(LogicalOperators);
 
-            if (expression[0] == '-')
+            if (expression[0] == '-' || expression[0] == '~') // el negativo y el not pueden estar al inicio o al final de la expresion
             {
                 // verificar si el siguiente caracter es un numero o un parentesis
                 if (expression.Length > 1 && (char.IsDigit(expression[1]) || expression[1] == '('))
@@ -158,7 +158,7 @@
                     continue;
                 }
 
-                if (nextChar == "-")
+                if (nextChar == "-" || nextChar == "~") // permite negativos y not despues de un operador
                 {
                     // permitir negativos despues de operadores o parentesis de apertura
                     if (IsOperator(currentChar) || currentChar == "(")
@@ -181,21 +181,44 @@
             string temp = expression; // creamos una copia de la expresion para manipularla
             temp = temp.Replace("(", " ").Replace(")", " "); // removemos los parentesis
 
-            foreach (var op in MathOperators.Concat(LogicalOperators)) // removemos los operadores
+            foreach (var op in MathOperators) // removemos los operadores matematicos
+            {
+                temp = temp.Replace(op, " ");
+            }
+
+            foreach (var op in LogicalOperators)
             {
                 temp = temp.Replace(op, " ");
             }
 
             var numbers = temp.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries); // separamos los numeros
 
-            foreach (var number in numbers) // verificamos que cada token sea un numero
+            foreach (var number in numbers) // verificamos que cada número sea un 0 o 1
             {
-                if (!double.TryParse(number, out _))
+                if (IsOperatorInExpression(expression))
                 {
-                    return false;
+                    if (!IsValidLogicalNumber(number)) // validacion para valores logicos
+                    {
+                        return false;
+                    }
+                }
+                else
+                {
+                    if (!double.TryParse(number, out _)) // verificacion general para numeros validos
+                    {
+                        return false;
+                    }
                 }
             }
             return true;
+        }
+        private bool IsOperatorInExpression(string expression) // verifica si la expresion contiene operadores logicos
+        {
+            return LogicalOperators.Any(op => expression.Contains(op));
+        }
+        private bool IsValidLogicalNumber(string number)
+        {
+            return number == "0" || number == "1"; // acepta solo 0 o 1
         }
 
         public string CleanExpression(string expression) // metodo para obtener una representacion limpia de la expresion
