@@ -88,10 +88,12 @@ namespace ExpressionCalculator.Server.Models
                 "/" => rightValue != 0
                     ? leftValue / rightValue
                     : throw new DivideByZeroException(),
-                "%" => rightValue != 0
-                    ? leftValue % rightValue
-                    : throw new DivideByZeroException(),
+                "%" => (leftValue / 100) * rightValue,
                 "**" => Math.Pow(leftValue, rightValue),
+		"&" => Convert.ToDouble(Convert.ToBoolean(leftValue) && Convert.ToBoolean(rightValue)),
+		"|" => Convert.ToDouble(Convert.ToBoolean(leftValue) || Convert.ToBoolean(rightValue)),
+		"^" => Convert.ToDouble(Convert.ToBoolean(leftValue) != Convert.ToBoolean(rightValue)),
+		// "~" => (double)(~(int)rightValue), // Nota: operador unario, solo usa rightValue
                 _ => throw new ArgumentException($"Operador no soportado: {node.Value}")
             };
         }
