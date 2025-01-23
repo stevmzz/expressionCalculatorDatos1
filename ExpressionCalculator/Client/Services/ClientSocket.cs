@@ -1,8 +1,8 @@
-﻿// En Services/ClientSocket.cs
-using System;
+﻿using System;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
+using ExpressionCalculator.Client.Models;
 
 namespace ExpressionCalculator.Client.Services
 {
@@ -12,6 +12,7 @@ namespace ExpressionCalculator.Client.Services
         private NetworkStream _stream; // flujo para enviar y recibir informacion
         private readonly string _serverIp; // ip del server
         private readonly int _serverPort; // puerto del server
+        public string ClientId { get; private set; } // getter y setter del id del cliente
 
         public ClientSocket(string serverIp = "192.168.100.45", int serverPort = 8888)
         {
@@ -24,6 +25,16 @@ namespace ExpressionCalculator.Client.Services
             _client = new TcpClient(); // crea un cliente
             await _client.ConnectAsync(_serverIp, _serverPort); // intenta conectarse
             _stream = _client.GetStream(); // obtiene flujo de datos
+
+            // recibir el id del cliente
+            byte[] buffer = new byte[1024];
+            int bytesRead = await _stream.ReadAsync(buffer, 0, buffer.Length); // lee y almacena los datos del server
+            string response = Encoding.UTF8.GetString(buffer, 0, bytesRead).Trim();
+
+            if (response.StartsWith("CLIENT_ID:")) // comprueba si la respuesta contiene el clientid
+            {
+                ClientId = response.Substring("CLIENT_ID:".Length);
+            }
         }
 
         public async Task SendExpressionAsync(string expression) // metodo para enviar expresion
@@ -39,6 +50,29 @@ namespace ExpressionCalculator.Client.Services
             byte[] buffer = new byte[1024];
             int bytesRead = await _stream.ReadAsync(buffer, 0, buffer.Length);
             return Encoding.UTF8.GetString(buffer, 0, bytesRead).Trim();
+        }
+
+        public async Task<List<Operation>> GetOperationsHistoryAsync()
+        {
+            await SendExpressionAsync("GET_HISTORY"); // solicita el historial
+            string response = await ReceiveResponseAsync();
+
+            return response.Split('\n')
+                .Where(line => !string.IsNullOrWhiteSpace(line))
+                .Select(line =>
+                {
+                    var parts = line.Split(',');
+                    return new Operation // datos de la operacion
+                    {
+                        Timestamp = DateTime.ParseExact(parts[0], "yyyy-MM-dd", null).Date,
+                        Expression = parts[1],
+                        Result = double.Parse(parts[2]),
+                        ClientId = parts[3]
+                    };
+                })
+                .Where(op => op.ClientId == ClientId) // filtra las operaciones que coinciden con el id
+                .OrderByDescending(op => op.Timestamp) // ordena las operaciones
+                .ToList(); // convierte la secuencia en una lsita de operaciones
         }
 
         public void Disconnect() // metodo para desconectar cliente del server
