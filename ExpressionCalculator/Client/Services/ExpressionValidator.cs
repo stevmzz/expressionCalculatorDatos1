@@ -1,4 +1,6 @@
-﻿namespace ExpressionCalculator.Client.Services
+using System.Globalization;
+
+namespace ExpressionCalculator.Client.Services
 {
     public class ExpressionValidator
     {
@@ -15,6 +17,7 @@
             }
 
             expression = expression.Replace(" ", ""); // eliminar espacios en blanco
+            expression = expression.Replace(",", "."); // convertir comas en puntos
 
             if (!ContainsOnlyValidCharacters(expression))
             {
@@ -56,7 +59,9 @@
             {
                 if (!char.IsDigit(c) &&
                     !allOperators.Contains(c.ToString()) &&
-                    c != ' ')
+                    c != ' ' &&
+                    c != '.' &&
+                    c != ',')
                 {
                     return false;
                 }
@@ -195,16 +200,19 @@
 
             foreach (var number in numbers) // verificamos que cada número sea un 0 o 1
             {
+                // primero verificamos si hay operadores logicos en la expresion
                 if (IsOperatorInExpression(expression))
                 {
-                    if (!IsValidLogicalNumber(number)) // validacion para valores logicos
+                    // si hay operadores logicos, solo permitimos 0 o 1
+                    if (!IsValidLogicalNumber(number))
                     {
                         return false;
                     }
                 }
                 else
                 {
-                    if (!double.TryParse(number, out _)) // verificacion general para numeros validos
+                    // si no hay operadores logicos, usamos cultureinfo para decimales
+                    if (!double.TryParse(number, NumberStyles.Float, CultureInfo.InvariantCulture, out _))
                     {
                         return false;
                     }
@@ -212,10 +220,12 @@
             }
             return true;
         }
+
         private bool IsOperatorInExpression(string expression) // verifica si la expresion contiene operadores logicos
         {
             return LogicalOperators.Any(op => expression.Contains(op));
         }
+
         private bool IsValidLogicalNumber(string number)
         {
             return number == "0" || number == "1"; // acepta solo 0 o 1
